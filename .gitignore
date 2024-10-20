@@ -3,18 +3,9 @@ data/*
 engines/*
 log/*
 onnx/*
-
-*.engine
-*.onnx
-__pycache__/
-data/*
-engines/*
-log/*
-onnx/*
-
 lseg/checkpoints/*.ckpt
 
 *.engine
 *.onnx
 *.jgp
-*.png
+
