@@ -22,6 +22,7 @@ def _init_lseg():
         lseg_model = LSegEncNet("", arch_option=0, block_depth=0, activation="lrelu", crop_size=crop_size)
         model_state_dict = lseg_model.state_dict()
         checkpoint_dir = Path(__file__).resolve().parents[0] /"lseg" / "checkpoints"
+        print(checkpoint_dir)
         checkpoint_path = checkpoint_dir / "demo_e200.ckpt"
         os.makedirs(checkpoint_dir, exist_ok=True)
         if not checkpoint_path.exists():
@@ -52,7 +53,7 @@ def _init_lseg():
 
 # init lseg model
 lseg_model, lseg_transform, crop_size, base_size, norm_mean, norm_std = _init_lseg()
-rgb_path = "./chair.jpg"
+rgb_path = "./image/chair.jpg"
 bgr = cv2.imread(str(rgb_path))
 # If you don't want to change the scale of the image, you can comment the following line
 bgr = cv2.resize(bgr, (480,480))

@@ -6,7 +6,7 @@ import torch
 
 from matplotlib import pyplot as plt
 
-from utils.mapping_utils import *
+from utils.visual_utils import *
 
 from lseg.modules.models.lseg_net import LSegEncNet
 from lseg.additional_utils.models import resize_image, pad_image, crop_image
