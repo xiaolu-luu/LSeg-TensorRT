@@ -84,14 +84,14 @@ class VisualEncoder:
         nInput = [self.engine.get_tensor_mode(lTensorName[i]) for i in range(nIO)].count(trt.TensorIOMode.INPUT)
         self.context.set_input_shape(lTensorName[0],[1,3,self.nHeight,self.nWidth])
         
-        for i in range(nIO):
-            print("[%2d]%s->" % (i, "Input " if i < nInput else "Output"), self.engine.get_tensor_dtype(lTensorName[i]), self.engine.get_tensor_shape(lTensorName[i]), self.context.get_tensor_shape(lTensorName[i]), lTensorName[i])
-        print(nInput)
+        # for i in range(nIO):
+        #     print("[%2d]%s->" % (i, "Input " if i < nInput else "Output"), self.engine.get_tensor_dtype(lTensorName[i]), self.engine.get_tensor_shape(lTensorName[i]), self.context.get_tensor_shape(lTensorName[i]), lTensorName[i])
+        # print(nInput)
         bufferH = []
         image = cv2.imread(inferenceImage)
         data = cv2.resize(image, (self.nWidth, self.nHeight))
-        outputImage = 'resized_image.jpg' 
-        cv2.imwrite(outputImage, data)
+        # outputImage = 'resized_image.jpg' 
+        # cv2.imwrite(outputImage, data)
         resized_image = cv2.cvtColor(data, cv2.COLOR_BGR2RGB)
         # resized_image = resized_image.astype(np.float32) / 255.0
         # resized_image = resized_image.transpose(2, 0, 1)[np.newaxis, :, :, :]
@@ -104,7 +104,7 @@ class VisualEncoder:
             ]
         )
         image = lseg_transform(resized_image).unsqueeze(0)#.to(device)
-        print("image",image.shape)
+        # print("image",image.shape)
         image = np.array(image)
         # img = image[0].permute(1, 2, 0)
         # resized_image = img * 0.5 + 0.5
@@ -412,12 +412,12 @@ if __name__ == "__main__":
         # visual_feature = visual_encoder.infer_visual_multiple_times(image_paths)
 
         # ==========Test the time it takes to run the inference 100 times========
-        # output = visual_encoder.infer_visual_test_times(image_path,100)
+        output = visual_encoder.infer_visual_test_times(inferenceImage,100)
         
     if textual_encoder.build_engine():
 
         #=========Test a textual list==============
-        labels = ["people","dog","trees","other"]
+        labels = ["other"]
         text_encode =np.array(clip.tokenize(labels))
         print("text_encode.shape",text_encode.shape)
         text_feature, _ = textual_encoder.infer_textual(text_encode)
@@ -432,7 +432,7 @@ if __name__ == "__main__":
         print('text_feature:',np.array(text_feature).shape)
         print("textual feature",text_feature)
         # ==========Test the time it takes to run the inference 100 times========
-        # textual_encoder.infer_text_test_times(text_encode)
+        textual_encoder.infer_text_test_times(text_encode)
 
     result = np.einsum('ijkl,mj->imkl', np.array(output), np.array(text_feature)) #(1, 2, 480, 480)
     # Output the shape of the result

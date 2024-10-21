@@ -12,7 +12,7 @@ from lseg.modules.models.lseg_net import LSegEncNet
 from lseg.additional_utils.models import resize_image, pad_image, crop_image
 import onnx
 import onnxsim
-
+import time 
 def export_norm_onnx(model, file, input1):
     torch.onnx.export(
         model         = model, 
@@ -101,11 +101,15 @@ def get_lseg_feat(
                 crop_img = crop_image(pad_img, h0, h1, w0, w1)
                 # pad if needed
                 pad_crop_img = pad_image(crop_img, norm_mean, norm_std, crop_size)
-                
+                # totaltime = 0
+                # start_time = time.time()
+                # for i in range (100):
                 with torch.no_grad():
-                    # output = model(pad_crop_img)
-                    # export_norm_onnx(model, "./lseg2_ns.onnx", pad_crop_img,labels)
+                        # output = model(pad_crop_img)
+                        # export_norm_onnx(model, "./lseg2_ns.onnx", pad_crop_img,labels)
                     output, logits = model(pad_crop_img, labels)
+                        # totaltime+=(time.time() - start_time)*1000
+                # print(totaltime)
                 cropped = crop_image(output, 0, h1 - h0, 0, w1 - w0)
                 cropped_logits = crop_image(logits, 0, h1 - h0, 0, w1 - w0)
                 outputs[:, :, h0:h1, w0:w1] += cropped

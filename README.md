@@ -69,6 +69,13 @@ python lseg_export.py
 ```bash
 python enginerun.py >./log/run1.log 2>&1
 ```
+## Performance comparison
+
+|  Frame    |  batch |   encode_image |   encode_text |    total(ms) |
+|:---------:|:------:|:--------------:|:-------------:|:------------:|
+| Pytorch   |      1 |   551.931      |       12.5647 |   564.4957   |
+| Onnx      |      1 |   255.234      |        4.3342 |   259.5682   |
+| TensorRT  |      1 |   166.4077     |        2.6548 |   169.0625   |
 
 # Advanced Usage (Unnecessary)
 The various performance testing codes employed during engine construction are provided, including error localization by comparing layer-wise outputs using Polygraphy, as well as the analysis of inference speed and accuracy loss across PyTorch, ONNX Runtime, and TensorRT.
